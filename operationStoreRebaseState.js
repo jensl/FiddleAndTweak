@@ -18,14 +18,15 @@
 
 "use strict";
 
-$(function ()
-  {
-    addShowEdits();
+function main(method, path, query, headers) {
+  var data = JSON.parse(read());
+  var review = new critic.Review(data.review_id);
 
-    if ($(".buttonscope-rebase").size() == 0)
-      $("button.preparerebase").wrap("<span class=buttonscope-rebase></span>");
+  critic.storage.set(format("rebase-state-%d", review.id),
+                     JSON.stringify(data["state"]));
 
-    critic.buttons.add({ title: "Interactive History Rewrite",
-                         href: "/FiddleAndTweak/rebase?review=" + critic.review.id,
-                         scope: "rebase" });
-  });
+  writeln("200");
+  writeln("Content-Type: text/json");
+  writeln();
+  writeln(JSON.stringify({ status: "ok" }));
+}

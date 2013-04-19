@@ -1,0 +1,128 @@
+/* -*- mode: css; indent-tabs-mode: nil -*-
+
+ Copyright 2013 Jens Lindström, Opera Software ASA
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ use this file except in compliance with the License.  You may obtain a copy of
+ the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ License for the specific language governing permissions and limitations under
+ the License.
+
+*/
+
+div.commit {
+    position: relative;
+    border: 2px solid #bb8;
+    background: #ffe;
+    padding: 1em;
+    margin-top: 1em
+}
+
+div.skipped > * {
+    opacity: .4
+}
+
+div.skip {
+    position: absolute;
+    right: 1em;
+    font-weight: bold;
+    opacity: 1;
+    z-index: 1
+}
+
+span.heading {
+    display: inline-block;
+    width: 7em;
+    text-align: right;
+    font-weight: bold;
+    padding: 1px 0.5em;
+    vertical-align: top
+}
+
+span.sha1 {
+    font-family: monospace
+}
+
+.author {
+    font-family: monospace
+}
+
+div.text {
+    display: inline-block;
+    border: 1px solid #bb8;
+    padding: 3px;
+    background: white;
+    white-space: pre;
+    font-family: monospace
+}
+
+div.followups {
+    margin-top: 1em;
+    border: 2px solid #bb8;
+    padding: 0.5em 0
+}
+
+div.spacer {
+    min-height: 1em
+}
+
+div.followup {
+    position: relative;
+    padding: 0.5em
+}
+
+div.followup span.heading {
+    width: 5em
+}
+
+div.followup > div.text, div.dragitem > div.text {
+    margin-left: 1em
+}
+
+div.dragitem {
+    border: 2px solid #bb8;
+    background: #ffe;
+    padding: 1em;
+    margin: 1em 0;
+    opacity: 0.8
+}
+
+div.followup > span.heading, div.dragitem > span.heading {
+    vertical-align: middle
+}
+
+pre.git-output {
+    overflow: auto;
+    padding: 3px;
+    background: white;
+    border: 1px solid black
+}
+
+div.unsupported {
+    width: 50%;
+    margin: 2em auto 0 auto;
+    font-weight: bold
+}
+
+div.hint {
+    text-align: right;
+    font-style: italic
+}
+
+input#targetbranch {
+    font-family: monospace
+}
+
+tr.item td.name {
+    vertical-align: middle !important
+}
+
+textarea {
+    overflow-y: scroll
+}

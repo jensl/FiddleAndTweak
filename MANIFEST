@@ -58,3 +58,18 @@ Function = main
 Description = "Store changed preferences."
 Script = pageStorePreference.js
 Function = main
+
+[Page FiddleAndTweak/rebase]
+Description = "Interactive rebase of review branch."
+Script = pageRebase.js
+Function = main
+
+[Page FiddleAndTweak/storerebasestate]
+Description = "Store rebase state of review branch."
+Script = operationStoreRebaseState.js
+Function = main
+
+[Page FiddleAndTweak/performrebase]
+Description = "Perform rebase of review branch."
+Script = operationPerformRebase.js
+Function = main
