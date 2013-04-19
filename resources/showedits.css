@@ -1,0 +1,86 @@
+/* -*- mode: css; indent-tabs-mode: nil -*-
+
+ Copyright 2013 Jens Lindström, Opera Software ASA
+
+ Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ use this file except in compliance with the License.  You may obtain a copy of
+ the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ License for the specific language governing permissions and limitations under
+ the License.
+
+*/
+
+div.message {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto
+}
+
+div.message h1 {
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em
+}
+
+table.edit {
+    width: 80%;
+    margin-top: 1em;
+    margin-left: 10%;
+    margin-right: 10%;
+    table-layout: fixed;
+    border-spacing: 0;
+    background-color: #eee;
+    border: 2px solid #996;
+    padding: 1em
+}
+
+table.edit > tbody > tr {
+    padding: 0;
+    margin: 0
+}
+
+table.edit > tbody > tr > td.linenr {
+    width: 5em;
+    text-align: right;
+    font-family: monospace;
+    padding-right: 0.5em
+}
+
+table.edit > tbody > tr > td.line {
+    text-align: left;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding-left: 0.5em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-right: 1px solid #888;
+    border-left: 1px solid #888
+}
+
+table.edit > tbody > tr.first > td.line {
+    border-top: 1px solid #888
+}
+
+table.edit > tbody > tr.last > td.line {
+    border-bottom: 1px solid #888
+}
+
+table.edit > tbody.old > tr > td.line {
+    background-color: #fdd
+}
+
+table.edit > tbody.new > tr > td.line {
+    background-color: #dfd
+}
+
+table.edit > tbody.buttons > tr > td {
+    text-align: right;
+    padding-top: 1em
+}

@@ -1,0 +1,60 @@
+Author = "Jens Lindstr\u00f6m"
+Description = "Extension for fiddling with and tweaking reviews."
+Flavor = js/v8
+
+[Inject config]
+Description = "Inject some configuration options."
+Script = injectConfig.js
+Function = main
+
+[Inject showcommit]
+Description = "Inject resources/showcommit.js."
+Script = injectShowCommit.js
+Function = main
+
+[Inject showcomment]
+Description = "Inject resources/showcomment.js."
+Script = injectShowComment.js
+Function = main
+Cached = yes
+
+[Inject showreview]
+Description = "Inject resources/showreview.js."
+Script = injectShowReview.js
+Function = main
+Cached = yes
+
+[Page FiddleAndTweak/getlines]
+Description = "Returns lines from a blob in a repository."
+Script = operationGetLines.js
+Function = main
+
+[Page FiddleAndTweak/savelines]
+Description = "Save edited lines."
+Script = operationSaveLines.js
+Function = main
+
+[Page FiddleAndTweak/reviewstate]
+Description = "Generates JSON containing a review's edit state."
+Script = operationReviewState.js
+Function = main
+
+[Page FiddleAndTweak/showedits]
+Description = "Show edits in specified review."
+Script = pageShowEdits.js
+Function = main
+
+[Page FiddleAndTweak/performedits]
+Description = "Perform edits in specified review."
+Script = pagePerformEdits.js
+Function = main
+
+[Page FiddleAndTweak/editspreview.js]
+Description = "Additional script data used by 'Push Changes' operation."
+Script = pageEditsPreview.js
+Function = main
+
+[Page FiddleAndTweak/storepreference]
+Description = "Store changed preferences."
+Script = pageStorePreference.js
+Function = main
