@@ -20,10 +20,56 @@
 
 $(function ()
   {
+    function simpleMoveRebase()
+    {
+      var content = $("<div class='enabletracking' title='Simple Move Rebase'>" +
+                      "<p><b>Upstream branch name:</b><br><input></p></div>");
+      var upstream_name = content.find("input");
+
+      upstream_name
+        .val("refs/heads/master");
+
+      function finished(result)
+      {
+        if (result)
+          location.href = "/r/" + critic.review.id;
+      }
+
+      function perform()
+      {
+        var operation = new critic.Operation(
+          { action: "rebase review",
+            url: "FiddleAndTweak/performrebase",
+            data: { review_id: critic.review.id,
+                    upstream: upstream_name.val().trim() },
+            wait: "Performing rebase...",
+            callback: finished });
+
+        operation.execute();
+      }
+
+      function cancel()
+      {
+        content.dialog("close");
+      }
+
+      var buttons = {
+        "Perform Rebase": perform,
+        "Cancel": cancel
+      };
+
+      content.dialog({ width: 400,
+                       buttons: buttons });
+    }
+
     addShowEdits();
 
     if ($(".buttonscope-rebase").size() == 0)
       $("button.preparerebase").wrap("<span class=buttonscope-rebase></span>");
+
+    critic.buttons.add({ title: "Simple Move Rebase",
+                         onclick: simpleMoveRebase,
+                         scope: "rebase" });
 
     critic.buttons.add({ title: "Interactive History Rewrite",
                          href: "/FiddleAndTweak/rebase?review=" + critic.review.id,

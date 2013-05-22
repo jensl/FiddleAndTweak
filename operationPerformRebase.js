@@ -27,14 +27,43 @@ function main(method, path, query, headers) {
   var work = review.branch.getWorkCopy();
   var result;
 
-  var main_commits = data.state.main_commits.map(
-    MainCommit.fromJSON.bind(null, review));
-
   var name = user_data["git.config.user.name"] || critic.User.current.fullname;
   var email = user_data["git.config.user.email"] || critic.User.current.email;
 
   try {
-    work.run("reset", "--hard", review.branch.commits.upstreams[0].sha1);
+    var upstream_sha1;
+    var main_commits;
+
+    if (data.upstream) {
+      try {
+        upstream_sha1 = review.repository.revparse(data.upstream);
+      } catch (error) {
+        throw { status: "failure",
+                code: "invalidupstream",
+                title: "Invalid upstream branch",
+                message: error.message };
+      }
+
+      if (upstream_sha1 == review.branch.commits.upstreams[0].sha1) {
+        throw { status: "failure",
+                code: "invalidupstream",
+                title: "Rebase is a no-op",
+                message: "The review branch is already up-to-date." };
+      }
+
+      work.run("fetch", "origin", data.upstream);
+
+      main_commits = review.branch.commits.slice().reverse().map(
+        function (commit) {
+          return new MainCommit(commit);
+        });
+    } else {
+      upstream_sha1 = review.branch.commits.upstreams[0].sha1;
+      main_commits = data.state.main_commits.map(
+        MainCommit.fromJSON.bind(null, review));
+    }
+
+    work.run("reset", "--hard", upstream_sha1);
 
     main_commits.forEach(
       function (main_commit) {
@@ -88,22 +117,35 @@ function main(method, path, query, headers) {
                    GIT_COMMITTER_EMAIL: email });
       });
 
-    review.prepareRebase({ historyRewrite: true });
+    if (data.upstream)
+      review.prepareRebase({ newUpstream: review.repository.getCommit(upstream_sha1) });
+    else
+      review.prepareRebase({ historyRewrite: true });
 
     var rebase_prepared = true, tracking_disabled = false;
+    var target_branch = data.state ? data.state.target_branch : null;
+
     try {
-      if (data.state.target_branch) {
+      if (target_branch) {
         review.trackedBranch.disable();
         tracking_disabled = true;
       }
 
-      work.run("push", "--force", "origin", "HEAD");
+      try {
+        work.run("push", "--force", "origin", "HEAD");
+      } catch (error) {
+        throw { status: "failure",
+                code: "pushfailed",
+                title: "Failed to push review branch!",
+                message: error.message };
+      }
+
       rebase_prepared = false;
 
-      if (data.state.target_branch) {
+      if (target_branch) {
         work.run("push", review.trackedBranch.remote,
-                 format("HEAD:refs/heads/%s", data.state.target_branch));
-        review.trackedBranch.enable(data.state.target_branch);
+                 format("HEAD:refs/heads/%s", target_branch));
+        review.trackedBranch.enable(target_branch);
         tracking_disabled = false;
       }
     } finally {
@@ -114,8 +156,10 @@ function main(method, path, query, headers) {
         review.trackedBranch.enable();
     }
 
-    critic.storage.set(format("rebase-state-%d", review.id),
-                       JSON.stringify({}));
+    if (data.state) {
+      critic.storage.set(format("rebase-state-%d", review.id),
+                         JSON.stringify({}));
+    }
 
     result = { status: "ok", sha1: work.run("rev-parse", "HEAD").trim() };
   } catch (error) {
